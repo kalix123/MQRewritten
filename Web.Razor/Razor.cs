@@ -23,6 +23,19 @@ public class Razor(ILogger<Razor> logger) : WebModule(logger)
     public override void PostWebBuild(WebApplication app)
     {
         base.PostWebBuild(app);
+
+        // MQ Rewritten: keep the admin pages private. The site's login cookies can't prove who someone is, so block them for everyone.
+        app.Use((context, next) =>
+        {
+            var path = context.Request.Path;
+
+            if (!path.StartsWithSegments("/commands") && !path.StartsWithSegments("/colliders") && !path.StartsWithSegments("/hubs/colliders"))
+                return next();
+
+            context.Response.StatusCode = 404;
+            return System.Threading.Tasks.Task.CompletedTask;
+        });
+
         app.MapRazorPages();
         app.MapHub<ColliderHub>("/hubs/colliders");
     }
