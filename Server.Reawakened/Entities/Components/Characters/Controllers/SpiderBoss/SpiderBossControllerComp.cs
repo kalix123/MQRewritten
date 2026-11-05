@@ -50,6 +50,10 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
         if (Room == null)
             return;
 
+        // MQ Rewritten: the Noogo Village teaser fight is removed, so it never starts.
+        if (Teaser)
+            return;
+
         if (triggered)
         {
             if (Teaser)
