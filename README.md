@@ -1,119 +1,64 @@
-
 <div align="center">
-    <h1>
-        <img width="70%" src="LogoBanner.png?raw=true" style="border-radius: 50%;" align="center">
-        <br>
-    </h1>
-    <h3>A community-driven server emulator, written completely from scratch in C#, for MQ!</h3>
+    <img width="70%" src="LogoBanner.png?raw=true" alt="MQ Rewritten">
+    <h3>The server and website behind MQ Rewritten, a fan revival of Monkey Quest.</h3>
     <p>
-        <a href="https://github.com/FeroxFoxxo/MQReawakened/blob/master/LICENSE.md">
-            <img alt="License" src="https://img.shields.io/github/license/feroxfoxxo/mqreawakened?label=License&style=for-the-badge">
-        </a>
-        <a href="https://github.com/FeroxFoxxo/MQReawakened/wiki">
-            <img alt="Wiki" src="https://img.shields.io/badge/Wiki-View%20Docs-purple?style=for-the-badge">
-        </a>
-        <a href="SETUP.md">
-            <img alt="Setup" src="https://img.shields.io/badge/Setup-Read%20Guide-brightgreen?style=for-the-badge">
-        </a>
-        <a href="https://github.com/FeroxFoxxo/MQReawakened/projects">
-            <img alt="Wiki" src="https://img.shields.io/badge/To%20Do-View%20Projects-darkgreen?style=for-the-badge">
-        </a>
-        <a href="https://github.com/FeroxFoxxo/MQReawakened">
-            <img alt="Stars" src="https://img.shields.io/github/stars/feroxfoxxo/MQReawakened?color=gold&style=for-the-badge">
-        </a>
+        <a href="https://mqrewritten.online"><strong>Play at mqrewritten.online</strong></a>
     </p>
-    <h4>This server is completely free from the original game's assets / intellectual property.</h4>
-    <h5>None of the repo, the tool, nor the repo owner is affiliated with or sponsored by any affiliates of the original game.</h4>
-    <h1></h1>
 </div>
 
 > [!IMPORTANT]
-> Looking to host your own server? Read the new step‑by‑step setup guide: [SETUP.md](SETUP.md)
->
-> Looking to play the game? Read the new step‑by‑step setup guide: [SETUP_LAUNCHER.md](SETUP_LAUNCHER.md)
->
-> Looking to customize the game? Read the new step-by-step asset loader guide: [ASSETLOADER.md](ASSETLOADER.md)
+> **This project is programmed with AI.** The game client, the website and our changes to this server were written
+> with [Claude](https://claude.com/product/claude-code), an AI made by Anthropic, so expect some bugs. The
+> [About page](https://mqrewritten.online/about) has more detail.
 
-### Information
+## Want to host your own server?
 
-If you encounter any issues with the code, please submit an issue through [the repo's issue system](https://github.com/FeroxFoxxo/MQReawakened/issues), and it will be assigned to someone accordingly.
+**Use [MQReawakened](https://github.com/FeroxFoxxo/MQReawakened), not this repo.**
 
-If you need to report anything about this repo, or otherwise reach out to me, you can find me at feroxfoxxo@gmail.com.
+MQ Rewritten is built around our own game client, written in Godot, which isn't part of this repo. Running this code by
+itself won't give you a working game. MQReawakened is the original project this one is forked from. It works with the
+original game client, and it has the setup guides and community support you'll need.
 
-## Contributing
+The setup guides in this repo (`SETUP.md`, `SETUP_LAUNCHER.md` and `ASSETLOADER.md`) come from MQReawakened and describe
+how that project works. Follow the versions in [its repo](https://github.com/FeroxFoxxo/MQReawakened).
 
-If you'd like to contribute to this project, please read [CONTRIBUTING.md](CONTRIBUTING.md).
+## Want to play?
 
-### Prerequisites
+Create an account and download the client at [mqrewritten.online](https://mqrewritten.online).
 
-- You **must** provide your *own* copy of the game and its associated asset bundles.
-- You **must** provide your *own* associated DLLs from the game, which are to be added to the server itself on compile - ensuring this repo does not contain any copywritten code.
+Found a bug? Report it on the [Help page](https://mqrewritten.online/en/report-a-bug).
 
-## How to set up MQReawakened
+## What's different from MQReawakened
 
-Please read the [developer guide here on how to set up MQReawakened](https://github.com/FeroxFoxxo/MQReawakened/wiki/Setting-Up-The-Development-Environment).
+The game server itself stays close to MQReawakened, so we can keep pulling in its updates. Our changes are mostly to the
+website:
 
-For hosting with Docker and getting a server online, see the step‑by‑step guide: [SETUP.md](SETUP.md).
+- A new look, with an About page and a changelog for the client.
+- A Downloads page that serves our client.
+- Password and username resets by email.
+- The admin pages are hidden and blocked.
+- `update-server.sh`, which updates our Linux server.
 
-If you want to play 2012 or earlier (NOT RECOMMENDED), please use the *new and improved!* [MQClient found here](https://github.com/FeroxFoxxo/MQClient).
+This source is public because the server is licensed under the [GNU AGPL v3](LICENSE.md), which requires it.
 
-Otherwise, simply edit the `settings.txt` and `game/LocalBuildConfig.xml` files from the original game client to point to the MQReawakened server you are trying to connect to, replacing the default supplied.
+## Credits
 
-## Gameplay
+This project wouldn't exist without [FeroxFoxxo](https://github.com/FeroxFoxxo) and everyone who built
+[MQReawakened](https://github.com/FeroxFoxxo/MQReawakened). That includes [Victti](https://github.com/victti/), a concept
+contributor and mentor on that project, and Z6mbie, who designed its logo.
 
-The project's goal is to faithfully recreate the game as it was at the time of the targeted build.
-While most features are implemented and the game is playable from start to finish, functionality or bugs may be missing.
+The current MQ Rewritten logo is temporary. It was generated with code, not with a generative AI image model:
+[`tools/make_logo.py`](tools/make_logo.py) draws it from shapes defined in the script. Claude wrote that script.
 
-When hosting a local server, you can access all commands by default (account level: owner).
+### Open source licenses
 
-## Architecture
+- [AssetRipper.IO.Endian](https://github.com/AssetRipper/AssetRipper/): binary read/write utility ([license](Server.Reawakened/Licences/LICENSE_ASSETRIPPER))
+- [AssetStudio](https://github.com/Perfare/AssetStudio/): tool for exploring the original asset bundles ([license](Server.Reawakened/Licences/LICENSE_ASSETSTUDIO))
+- [ServUO](https://github.com/ServUO/ServUO/): server emulator used as a base, written in C# .NET ([license](Server.Base/Licences/LICENSE_SERVUO))
+- [Thrift](https://github.com/apache/thrift/): point-to-point RPC implementation ([license](Server.Reawakened/Licences/LICENSE_THRIFT))
+- [Discord.Net](https://github.com/discord-net/Discord.Net/): reflective class initialization ([license](Server.Reawakened/Licences/LICENSE_DNET))
 
-MQ consists of the following components:
+## Legal
 
-* A login server and asset hosting service over HTTP
-* A shard server that speaks the MQ network protocol over TCP
-
-#### For 2012
-* A web browser compatible with the old NPAPI plugin interface
-* A `.unity3d` bundle that contains the game code and essential resources (loading screen, etc.)
-
-#### For 2013/2014
-* A Unity executable file, typically in the /game/ folder, and a launcher.
-
-Both the login and shard server run on the same Asp.Net application, as seen in this git repository.
-
-The original game used the player's actual web browser to launch the game. Still, since then, the NPAPI plugin interface the game relied on has been deprecated and is no longer available in most modern browsers. MQR gets around this issue by distributing an older version of Electron, a specialised web browser software package.
-
-The browser/Electron client opens a web page with an `<embed>` tag of the appropriate MIME type, where the `src` param is the address of the game's `.unity3d` entry point. This triggers the browser to load an NPAPI plugin that handles said MIME type, in this case, the Unity Web Player.
-
-*(similarly to https://github.com/OpenFusionProject/OpenFusion)*
-
-### Other information
-
-- You can also download ILSpy to peek around any dependencies of the original game, understand how they work, and reverse engineer them to develop a server-side implementation.
-- https://sourceforge.net/projects/ilspy.mirror
-
-### Running the game client on Linux
-
-While the MQ server supports Windows and Linux (and other Unix-like systems), the game client natively supports only Windows because of the NPAPI Unity Web Player plugin needed to run the game. Nevertheless, the client runs very well in Wine if appropriately configured.
-
-Due to the plethora of Wine prefix managers that people use (in addition to the option of just configuring your Wine prefix by hand), you could set the game up in several ways. Regardless of which you prefer, for MQ, there's a handful of dependencies you need to satisfy:
-
-- Electron (MQClient.exe) needs all fonts to run
-- It also needs to be run with the following arguments: --no-sandbox --disable-gpu
-- Using DXVK instead of wined3d is highly recommended to avoid graphical glitches like mission indicator rings not rendering
-
-While we have not written a complete guide of how to do this yet, visiting <a href="https://github.com/OpenFusionProject/OpenFusion/wiki/Running-the-game-client-on-Linux">OpenFusion's guide in how to do this</a>, another Unity WebPlayer MMO, may provide a good enough understanding of where to start.
-
-### Open Source Licenses
-
-- <a href="https://github.com/AssetRipper/AssetRipper/">AssetRipper.IO.Endian</a> - Binary read/write utility [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETRIPPER)
-- <a href="https://github.com/Perfare/AssetStudio/">AssetStudio</a> - Tool for exploring the original assetbundles [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Web.AssetBundles/Licences/LICENSE_ASSETSTUDIO)
-- <a href="https://github.com/ServUO/ServUO/">ServUO</a> - Server emulator used as a base, written in C# .NET [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Base/Licences/LICENSE_SERVUO)
-- <a href="https://github.com/apache/thrift/">Thrift</a> - Point-to-point RPC implementation [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Reawakened/Licences/LICENSE_THRIFT)
-- <a href="https://github.com/discord-net/Discord.Net/">Discord.Net</a> - Reflective class initialization [LICENSE](https://github.com/FeroxFoxxo/MQReawakened/blob/main/Server.Reawakened/Licences/LICENSE_DNET)
-
-### Commemorations
-
-- Z6mbie - Logo designer.
-- <a href="https://github.com/victti/">Victti</a> - Concept contributor & mentor.
+This repo contains none of the original game's assets. MQ Rewritten is a fan project, and it isn't affiliated with or
+sponsored by the original game's developers or publishers.
