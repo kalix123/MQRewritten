@@ -5,12 +5,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>@ViewData["Title"] - @ViewData["ServerName"]</title>
 	<meta name="title" content="@ViewData["ServerName"]" />
-	<meta name="description" content="An open-source reimplementation & emulation of the backend of MQ, written from scratch without including intellectual property from the original game." />
+	<meta name="description" content="A fan-made remake of MQ with a new game client and server. Create a monkey and explore the land of Ook." />
 	<meta name="keywords" content="@ViewData["ServerName"]" />
 	<meta name="robots" content="noindex" />
 	<meta name="language" content="English" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" />
 	<link href="/_content/Web.Razor/style.css" rel="stylesheet" />
+	<link href="/_content/Web.Razor/rewritten.css" rel="stylesheet" />
 	@await RenderSectionAsync("Stylesheets", false)
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -49,7 +51,7 @@
 					@await Html.PartialAsync("_NavMenu")
 					<div class="nav-actions d-flex align-items-center" style="gap:10px;">
 						<button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-							<svg id="themeToggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" /></svg>
+							<svg id="themeToggleIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" /></svg>
 						</button>
 						<button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#primaryNav" aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
@@ -99,7 +101,7 @@
 (function(){
 	const root = document.documentElement; const btn = document.getElementById('themeToggle'); const icon = document.getElementById('themeToggleIcon');
 	const saved = localStorage.getItem('mq-theme'); if(saved){ root.setAttribute('data-theme', saved); }
-	function setIcon(){ if(!icon) return; if(root.getAttribute('data-theme')==='light'){ icon.innerHTML='<circle cx="12" cy="12" r="5" />'; } else { icon.innerHTML='<path d="M12 3a1 1 0 0 1 1 1 7 7 0 0 0 7 7 1 1 0 0 1 0 2 7 7 0 0 0-7 7 1 1 0 0 1-2 0 7 7 0 0 0-7-7 1 1 0 0 1 0-2 7 7 0 0 0 7-7 1 1 0 0 1 1-1Z" />'; } }
+	function setIcon(){ if(!icon) return; if(root.getAttribute('data-theme')==='light'){ icon.innerHTML='<circle cx="12" cy="12" r="4.5" /><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8" />'; } else { icon.innerHTML='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" />'; } }
 	icon && setIcon();
 	btn && btn.addEventListener('click',()=>{ const mode = root.getAttribute('data-theme')==='light'?'dark':'light'; root.setAttribute('data-theme', mode); localStorage.setItem('mq-theme', mode); setIcon(); showToast('Theme switched to '+mode.charAt(0).toUpperCase()+mode.slice(1), 'success'); });
 })();

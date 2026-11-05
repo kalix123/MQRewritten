@@ -19,7 +19,7 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Create Account", Description = "Join our community and explore the reborn world of Ook.", AdditionalClasses = "panel-p-lg flow" })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Create Account", Description = "Create your free account, then download the game and explore the world of Ook.", AdditionalClasses = "panel-p-lg flow" })
         <div class="row">
             <div class="col-lg-12" data-reveal>
                 <form asp-action="SignUp" method="post" class="form-modern" novalidate>
@@ -86,6 +86,8 @@
                         <button type="submit" class="btn-modern btn-accent btn-form">Sign Up</button>
                     </div>
                 </form>
+                <p class="rw-form-links">Already have an account? <a href="/en/login">Log in</a></p>
             </div>
         </div>
+    </div>
 </section>

@@ -19,7 +19,7 @@
 <section class="mq-container mt-space fade-in">
 	@await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel {
 	Title = "Welcome Back",
-		Description = "Log in to continue your adventure in Ook.",
+		Description = "Log in to your account. To play, log in from the game.",
 		AdditionalClasses = "panel-p-lg flow"
 		})
 
@@ -46,6 +46,8 @@
 					<button type="submit" class="btn-modern btn-accent btn-form">Login</button>
 				</div>
 			</form>
+			<p class="rw-form-links">New here? <a href="/en/signup">Sign up</a> &middot; Forgot your <a href="/en/signup/forgot-username">username</a> or <a href="/en/signup/forgot-password">password</a>?</p>
 		</div>
+	</div>
 	</div>
 </section>

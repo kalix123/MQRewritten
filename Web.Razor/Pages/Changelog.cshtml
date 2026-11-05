@@ -1,0 +1,53 @@
+@page
+@model Web.Razor.Pages.ChangelogModel
+@{
+	ViewData["Title"] = "Changelog";
+	var firstPublished = Model.Releases.FindIndex(r => !r.IsUnreleased);
+}
+
+<section class="mq-container mt-space fade-in">
+	@await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Changelog", Description = "What's changed in the game client, newest first.", AdditionalClasses = "flow panel-p-lg" })
+		@if (Model.Releases.Count == 0)
+		{
+			<p>No changes have been published yet.</p>
+		}
+		<div class="rw-releases">
+			@for (var i = 0; i < Model.Releases.Count; i++)
+			{
+				var release = Model.Releases[i];
+				<details class="rw-release" open="@(i <= firstPublished)">
+					<summary>
+						<h3>@(release.IsUnreleased ? "Next update" : release.Title)</h3>
+						@if (release.IsUnreleased)
+						{
+							<span class="rw-tag rw-tag-soft">Coming soon</span>
+						}
+						else if (i == firstPublished)
+						{
+							<span class="rw-tag">Latest</span>
+						}
+						@if (release.Date != null)
+						{
+							<time>@release.Date</time>
+						}
+					</summary>
+					<div class="rw-release-body">
+						@foreach (var line in release.Intro)
+						{
+							<p>@Html.Raw(line)</p>
+						}
+						@if (release.Items.Count > 0)
+						{
+							<ul>
+								@foreach (var item in release.Items)
+								{
+									<li>@Html.Raw(item)</li>
+								}
+							</ul>
+						}
+					</div>
+				</details>
+			}
+		</div>
+	</div>
+</section>

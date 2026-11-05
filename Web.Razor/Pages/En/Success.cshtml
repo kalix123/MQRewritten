@@ -2,13 +2,13 @@
 @model Web.Razor.Pages.En.SuccessModel
 
 @{
-    ViewData["Title"] = "Successful Sign Up";
+    ViewData["Title"] = "Account Created";
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Successfully Signed Up!", Description = "Your account is ready. Download the launcher and start exploring the world of Ook.", CenterHeader = true, AdditionalClasses = "panel-p-lg panel-variant-success flow" })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "You're All Set!", Description = "Your account is ready. Download the game and start exploring the world of Ook.", CenterHeader = true, AdditionalClasses = "panel-p-lg panel-variant-success flow" })
         <div class="action-row mt-1_75" data-reveal>
-            <a href="/download" class="btn-modern btn-accent btn-pad-md">Download</a>
+            <a href="/download" class="btn-modern btn-accent btn-pad-md">Download the Game</a>
             <a href="/" class="btn-modern btn-amber btn-pad-md">Return Home</a>
         </div>
     </div>

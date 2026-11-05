@@ -2,22 +2,39 @@
 @model Web.Razor.Pages.DownloadModel
 
 @{
-    ViewData["Title"] = "Download";
+    ViewData["Title"] = "Downloads";
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Starting Download", Description = "Thanks for downloading " + (string)ViewData["ServerName"] + ". Your adventure into the land of Ook begins soon.", CenterHeader = true, AdditionalClasses = "panel-p-lg flow" })
-        <p id="downloadMessage" class="stat-pill" style="display:none; margin-top:.75rem;" data-reveal>Your file is being downloaded...</p>
-        <div class="action-row mt-1_25" data-reveal>
-            <a href="/StartDownload" class="btn-modern btn-accent btn-form">If it doesn't start, click here</a>
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Downloads", Description = "Pick your platform. Your adventure into the land of Ook begins here.", CenterHeader = true, AdditionalClasses = "panel-p-lg flow" })
+        <div class="rw-platforms">
+            @foreach (var platform in Model.Platforms)
+            {
+                <article class="rw-platform @(platform.Url == null ? "is-soon" : null)">
+                    @if (platform.Mobile)
+                    {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5" /><path d="M11 18.5h2" /></svg>
+                    }
+                    else
+                    {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2" /><path d="M8 21h8M12 17v4" /></svg>
+                    }
+                    <h3>@platform.Name</h3>
+                    @if (!string.IsNullOrEmpty(platform.Detail))
+                    {
+                        <p>@platform.Detail</p>
+                    }
+                    @if (platform.Url != null)
+                    {
+                        <a href="@platform.Url" class="btn-modern btn-accent">Download</a>
+                    }
+                    else
+                    {
+                        <span class="rw-tag rw-tag-soft">Coming soon</span>
+                    }
+                </article>
+            }
         </div>
+        <p style="text-align:center; margin-top:1.25rem;">On Windows, unzip the download and run <strong>MQClient.exe</strong>. It keeps itself up to date. See what's new in the <a href="/changelog">changelog</a>.</p>
     </div>
 </section>
-
-@section Scripts {
-    <script>
-        window.onload = function () {
-            window.location.href = '/StartDownload';
-        };
-    </script>
-}

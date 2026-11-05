@@ -6,12 +6,22 @@
 }
 
 <section class="mq-container mt-space fade-in">
-    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Help & Support", Description = "Visit our Discord server to receive help with " + (string)ViewData["ServerName"] + ".", AdditionalClasses = "panel-p-lg flow" })
+    @await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "Help & Support", Description = "Answers to common problems with " + (string)ViewData["ServerName"] + ".", AdditionalClasses = "panel-p-lg flow" })
         <div class="row">
             <div class="col-12" data-reveal>
-                <div class="discord-shell">
-                    <iframe title="Discord Server" src="https://discord.com/widget?id=@Model.ServerId&theme=dark" class="discord-widget" allowtransparency="true"></iframe>
-                </div>
+                <ul class="rw-help">
+                    <li><strong>Can't log in?</strong> Reset your <a href="/en/signup/forgot-password">password</a> or look up your <a href="/en/signup/forgot-username">username</a>.</li>
+                    <li><strong>No account yet?</strong> <a href="/en/signup">Sign up</a> first, then log in from the game.</li>
+                    <li><strong>Game won't start?</strong> Get the latest version from <a href="/download">Downloads</a>, unzip it and run MQClient.exe.</li>
+                    <li><strong>Want to see what's new?</strong> The <a href="/changelog">changelog</a> lists every update.</li>
+                </ul>
+                @if (!string.IsNullOrEmpty(Model.ServerId))
+                {
+                    <h3 class="t-section" style="margin-top:1.5rem;">Still stuck? Ask on Discord</h3>
+                    <div class="discord-shell">
+                        <iframe title="Discord Server" src="https://discord.com/widget?id=@Model.ServerId&theme=dark" class="discord-widget" allowtransparency="true"></iframe>
+                    </div>
+                }
             </div>
         </div>
     </div>
