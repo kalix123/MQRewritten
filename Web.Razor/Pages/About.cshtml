@@ -1,0 +1,29 @@
+@page
+@model Web.Razor.Pages.AboutModel
+@{
+	ViewData["Title"] = "About";
+}
+
+<section class="mq-container mt-space fade-in">
+	@await Html.PartialAsync("_PanelShell", new Web.Razor.Pages.Shared.PanelShellModel { Title = "About " + (string)ViewData["ServerName"], Description = "What this project is, and how it's made.", AdditionalClasses = "flow panel-p-lg" })
+		<div class="rw-ai-notice">
+			<h2>This game is programmed with AI</h2>
+			<p>The game client, this website and our changes to the server were written with <strong>Claude</strong>, an AI made by Anthropic, using its coding tool Claude Code. A person decides what to build, tests it and makes the final calls, but the AI wrote most of the code. This page and our changelog were written with Claude too.</p>
+			<p>We want you to know that before you play. AI can make mistakes, so you may run into bugs. If you do, please tell us on the <a href="/en/report-a-bug">Help page</a>.</p>
+			<p>The game's art, music and sound effects come from the original game.</p>
+		</div>
+
+		<h2 class="t-section" style="margin-top:2rem;">Why we rebuilt it in Godot</h2>
+		<p>The original client was built on a version of Unity from over a decade ago. Instead of keeping that running, we rewrote the client from scratch in Godot, a free and open-source game engine.</p>
+		<ul class="rw-help">
+			<li><strong>Modern:</strong> Godot is actively developed, so the game isn't tied to old tools that have stopped moving forward.</li>
+			<li><strong>Fast:</strong> it's lightweight, which keeps the game quick to load and smooth to play.</li>
+			<li><strong>Cross-platform:</strong> one engine can reach desktop and mobile, and that's what makes a mobile version possible.</li>
+		</ul>
+
+		<h2 class="t-section" style="margin-top:2rem;">The server and source code</h2>
+		<p>Our server is a fork of <a href="https://github.com/FeroxFoxxo/MQReawakened">MQReawakened</a>, built by FeroxFoxxo and its contributors. This project wouldn't exist without their work.</p>
+		<p>The server is licensed under the GNU AGPL v3, and the source for the version running here is available at <a href="https://github.com/kalix123/MQRewritten">github.com/kalix123/MQRewritten</a>.</p>
+		<p>@ViewData["ServerName"] is a fan project. It isn't affiliated with or endorsed by the original game's developers or publishers.</p>
+	</div>
+</section>

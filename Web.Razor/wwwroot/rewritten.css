@@ -202,6 +202,12 @@ html[data-theme] .discord-shell { background: var(--rw-panel-alt); border: 1px s
 html[data-theme] .discord-shell::before, html[data-theme] .discord-shell::after { display: none; }
 html[data-theme] .discord-shell .discord-widget { box-shadow: none; }
 
+/* AI disclosure: kept prominent on purpose. */
+.rw-ai-notice { padding: 18px 22px; background: var(--rw-panel-alt); border: 2px solid var(--rw-orange); border-left-width: 8px; border-radius: 10px; }
+.rw-ai-notice h2 { margin: 0 0 .4rem; font-size: 1.3rem; font-weight: 800; color: var(--rw-orange-hot); }
+.rw-ai-notice p { margin: 0 0 .6rem; }
+.rw-ai-notice p:last-child { margin-bottom: 0; }
+
 /* Changelog */
 .rw-releases { display: flex; flex-direction: column; gap: 12px; margin-top: 1.25rem; }
 .rw-release { background: var(--rw-panel-alt); border: 1px solid var(--mq-color-border); border-radius: 8px; }
