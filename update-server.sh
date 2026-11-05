@@ -36,7 +36,7 @@ main() {
     fi
 
     echo "Waiting for the server (the first start can take a long time)..."
-    local waited=0 status running
+    local waited=0 status running ready
     while true; do
         running="$(docker inspect -f '{{.State.Running}}' "$container" 2>/dev/null || echo false)"
         if [[ "$running" != "true" ]]; then
@@ -45,7 +45,9 @@ main() {
         fi
 
         status="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{end}}' "$container")"
-        if [[ "$status" == "healthy" ]] && docker logs "$container" 2>&1 | grep -qE 'Game archive created|Download zip already exists'; then
+        # grep -c reads to the end: grep -q stops at the first match, which fails the pipe under pipefail on a long log.
+        ready="$(docker logs "$container" 2>&1 | grep -cE 'Game archive created|Download zip already exists' || true)"
+        if [[ "$status" == "healthy" && "$ready" -gt 0 ]]; then
             break
         fi
 
