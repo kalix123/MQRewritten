@@ -27,7 +27,7 @@ public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandle
 
     public async Task<IActionResult> OnGet(string id)
     {
-        var account = tempStorage.GetData<AccountDbEntry>(id);
+        var account = PagesService.IsResetTokenFresh(id) ? tempStorage.GetData<AccountDbEntry>(id) : null;
 
         if (account == null)
         {
@@ -45,7 +45,7 @@ public class ResetPasswordModel(InternalRwConfig iConfig, AccountHandler aHandle
         if (!ModelState.IsValid)
             return Page();
 
-        var account = tempStorage.GetData<AccountDbEntry>(id);
+        var account = PagesService.IsResetTokenFresh(id) ? tempStorage.GetData<AccountDbEntry>(id) : null;
 
         if (account == null)
         {

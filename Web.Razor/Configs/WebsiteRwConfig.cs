@@ -9,6 +9,7 @@ public class WebsiteRwConfig : IRwConfig
     public string SmtpPass { get; set; }
     public string SenderAddress { get; set; }
     public string DownloadName { get; set; }
+    public string PublicUrl { get; set; }
 
     public WebsiteRwConfig()
     {
@@ -17,5 +18,6 @@ public class WebsiteRwConfig : IRwConfig
         SmtpUser = "your-username";
         SmtpPass = "your-password";
         SenderAddress = "mail@example.com";
+        PublicUrl = string.Empty;
     }
 }

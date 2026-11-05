@@ -5,6 +5,7 @@ using MimeKit;
 using RazorLight;
 using Server.Base.Core.Extensions;
 using System.IO.Compression;
+using System.Security.Cryptography;
 using Server.Base.Core.Abstractions;
 using Server.Base.Core.Configs;
 using Server.Base.Core.Events;
@@ -130,12 +131,21 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
         }
     }
 
+    /// <summary>The site's address for links in emails: PublicUrl from Website.json, else the server address.</summary>
+    public string SiteUrl => string.IsNullOrWhiteSpace(config.PublicUrl) ? iConfig.GetHostAddress() : config.PublicUrl.Trim().TrimEnd('/');
+
+    /// <summary>An unguessable reset link id that starts with the time it was made, so it can expire.</summary>
+    public static string NewResetToken() =>
+        $"{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}-{Convert.ToHexString(RandomNumberGenerator.GetBytes(32))}";
+
+    public static bool IsResetTokenFresh(string id) =>
+        long.TryParse(id?.Split('-')[0], out var issued) && DateTimeOffset.UtcNow.ToUnixTimeSeconds() - issued < 3600;
+
     public async Task SendPasswordResetEmailAsync(string toEmail, string resetLink, string username)
     {
         var model = new PasswordResetModel(iConfig) { ResetLink = resetLink, Username = username };
         var body = await RenderTemplateAsync("PasswordReset", model);
         await SendEmail("Password Reset Request", body, toEmail);
-        logger.LogDebug("Password reset email sent successfully to mail: '{Mail}'", toEmail);
     }
 
     public async Task SendUsernameResetEmailAsync(string toEmail, string resetLink, string email)
@@ -143,7 +153,6 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
         var model = new UsernameResetModel(iConfig) { ResetLink = resetLink, Email = email };
         var body = await RenderTemplateAsync("UsernameReset", model);
         await SendEmail("Username Reset Request", body, toEmail);
-        logger.LogDebug("Username reset email sent successfully to mail: '{Mail}'", toEmail);
     }
 
     private async Task SendEmail(string subject, string body, string toEmail)
@@ -158,12 +167,22 @@ public class PagesService(InternalRwConfig iConfig, ServerRConfig sConfig,
             HtmlBody = body
         }.ToMessageBody();
 
-        using var smtp = new SmtpClient();
+        // A mail problem must not crash the page, or show whether the account exists.
+        try
+        {
+            using var smtp = new SmtpClient();
 
-        await smtp.ConnectAsync(config.SmtpServer, config.SmtpPort, SecureSocketOptions.StartTls);
-        await smtp.AuthenticateAsync(config.SmtpUser, config.SmtpPass);
-        await smtp.SendAsync(email);
-        await smtp.DisconnectAsync(true);
+            await smtp.ConnectAsync(config.SmtpServer, config.SmtpPort, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(config.SmtpUser, config.SmtpPass);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
+
+            logger.LogDebug("Sent '{Subject}' email to '{Mail}'", subject, toEmail);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Could not send '{Subject}' email to '{Mail}'", subject, toEmail);
+        }
     }
 
     private static async Task<string> RenderTemplateAsync(string template, object model)

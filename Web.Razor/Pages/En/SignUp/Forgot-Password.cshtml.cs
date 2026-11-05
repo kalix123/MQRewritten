@@ -4,7 +4,6 @@ using Server.Base.Core.Configs;
 using Server.Base.Core.Extensions;
 using Server.Base.Core.Services;
 using Server.Base.Database.Accounts;
-using Server.Reawakened.Network.Services;
 using System.ComponentModel.DataAnnotations;
 using Web.Razor.Services;
 
@@ -12,7 +11,7 @@ namespace Web.Razor.Pages.En.SignUp;
 
 [BindProperties]
 public class Forgot_PasswordModel(InternalRwConfig iConfig, AccountHandler aHandler,
-    PagesService email, TemporaryDataStorage tempStorage, RandomKeyGenerator keyGenerator) : PageModel
+    PagesService email, TemporaryDataStorage tempStorage) : PageModel
 {
     [Required(ErrorMessage = "Please Enter Username")]
     [Display(Name = "User Name")]
@@ -35,11 +34,11 @@ public class Forgot_PasswordModel(InternalRwConfig iConfig, AccountHandler aHand
         {
             var account = aHandler.GetAccountFromUsername(Username);
 
-            var sId = keyGenerator.GetRandomKey<TemporaryDataStorage>(account.Id.ToString());
+            var sId = PagesService.NewResetToken();
 
             tempStorage.AddData(sId, account.Write);
 
-            await email.SendPasswordResetEmailAsync(account.Email, $"{iConfig.GetHostAddress()}/en/signup/resetpassword?id={sId}", account.Username);
+            await email.SendPasswordResetEmailAsync(account.Email, $"{email.SiteUrl}/en/signup/resetpassword?id={sId}", account.Username);
         }
         else
         {

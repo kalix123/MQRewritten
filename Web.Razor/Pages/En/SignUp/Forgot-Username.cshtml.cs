@@ -40,7 +40,7 @@ public class Forgot_UsernameModel(InternalRwConfig config, AccountHandler aHandl
 
             tempStorage.AddData(sId, account.Write);
 
-            await email.SendUsernameResetEmailAsync(account.Email, $"{config.GetHostAddress()}/en/signup/resetusername?id={sId}", account.Email);
+            await email.SendUsernameResetEmailAsync(account.Email, $"{email.SiteUrl}/en/signup/resetusername?id={sId}", account.Email);
         }
         else
         {
