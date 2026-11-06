@@ -196,7 +196,12 @@ public class WorldHandler(EventSink sink, ServerRConfig config, WorldGraph world
         {
             var portalInfo = portalInfos.GetUseSubConditionInfo(levelInfo.UseconditionID);
         
-            if (portalInfo != null && !portalInfos.IsSatisfied(player, portalInfo))
+            // MQ Rewritten: Blimp Ridge's bundle condition needs quest 795, which is only reachable through
+            // Blimp Ridge itself, so use the internal condition (quest 821) that the portal sign shows.
+            var blimpRidgeOpen = newLevelId == 92 &&
+                internalPortalInfos.GetPortalInfos(newLevelId, portalId)?.CheckConditions(player) == true;
+
+            if (portalInfo != null && !blimpRidgeOpen && !portalInfos.IsSatisfied(player, portalInfo))
                 return;
         }
         else
