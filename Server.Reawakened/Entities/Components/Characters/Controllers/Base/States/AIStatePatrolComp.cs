@@ -82,6 +82,14 @@ public class AIStatePatrolComp : BaseAIState<AIStatePatrol, AI_State_Patrol>
     public override ComponentSettings GetSettings() => _initialized ? [] :
         [_spawnX.ToString(), _spawnY.ToString(), _spawnZ.ToString()];
 
+    // Someone joining part way through never saw the first start, which is what carries the waypoint.
+    public override ComponentSettings GetJoinSettings()
+    {
+        var settings = GetStartSettings(_stateStartTime);
+        settings.AddRange([_spawnX.ToString(), _spawnY.ToString(), _spawnZ.ToString()]);
+        return settings;
+    }
+
     public override void OnAIStateIn()
     {
         DetectionStartTime = Room.Time;

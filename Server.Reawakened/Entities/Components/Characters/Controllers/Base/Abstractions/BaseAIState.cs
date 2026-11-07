@@ -14,6 +14,7 @@ public abstract class BaseAIState<T, T2> : Component<T>, IAIState where T2 : cla
     public ILogger<T> Logger { get; set; }
 
     public bool StateActivated => _stateStartTime != 0f;
+    public float StateStartTime => _stateStartTime;
     public T2 State => _state as T2;
 
     public IAIStateMachine StateMachine;
@@ -115,6 +116,8 @@ public abstract class BaseAIState<T, T2> : Component<T>, IAIState where T2 : cla
         startSettings.AddRange(GetSettings());
         return startSettings;
     }
+
+    public virtual ComponentSettings GetJoinSettings() => GetFullSettings(_stateStartTime);
 
     public void AddNextState<AiState>() where AiState : class, IAIState =>
         StateMachine.AddNextState<AiState>();

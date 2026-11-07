@@ -3,6 +3,7 @@ using Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstract
 using Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss.States;
 using Server.Reawakened.Entities.Components.GameObjects.InterObjs.Interfaces;
 using Server.Reawakened.Entities.Components.GameObjects.Trigger.Interfaces;
+using Server.Reawakened.Players;
 using Server.Reawakened.Rooms;
 
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.SpiderBoss;
@@ -117,6 +118,9 @@ public class SpiderBossControllerComp : BaseAIStateMachine<SpiderBossController>
     private static int GetTargetPhase(float healthRatio, float trans1, float trans2) =>
         (trans2 > 0 && healthRatio <= trans2) ? 2 :
         (trans1 > 0 && healthRatio <= trans1) ? 1 : 0;
+
+    // Its states script an entrance and the intro camera, which must not replay for someone arriving mid-fight.
+    public override void SendCurrentStates(Player player) { }
 
     public override void Update()
     {

@@ -64,6 +64,8 @@ public class AIStateEnemy(EnemyData data) : BaseEnemy(data)
                     false, AISyncEventHelper.IndexOf(StateType.Unknown, []), string.Empty
                 )
             );
+
+        StateMachine?.SendCurrentStates(player);
     }
 
     public AIInit_SyncEvent GetBlankEnemyInit(float posX, float posY, float posZ, float spawnX, float spawnY) =>

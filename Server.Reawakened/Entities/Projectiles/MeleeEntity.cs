@@ -33,7 +33,7 @@ public class MeleeEntity : BaseProjectile
         var meleeHeight = onGround ? config.MeleeHeight : config.MeleeAerialRange;
 
         Collider = new AttackCollider(id, Position, new RectModel(meleeLeft, meleeTop, meleeWidth, meleeHeight),
-            PrjPlane, player, item, item.ItemEffects, item.PrefabName, LifeTime, onGround ? 0.1f : 0.5f,
+            PrjPlane, player, item, item.ItemEffects, item.PrefabName, LifeTime, onGround ? 0.1f : 0.4f,
             player.Character.StatusEffects.HasEffect(ItemEffectType.Detect), itemCatalog
         );
 

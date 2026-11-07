@@ -2,6 +2,7 @@
 using Server.Reawakened.Entities.Enemies.EnemyTypes;
 using Server.Reawakened.Entities.Enemies.Models;
 using Server.Reawakened.Players;
+using Server.Reawakened.Players.Extensions;
 using Server.Reawakened.Rooms.Extensions;
 using Server.Reawakened.Rooms.Models.Entities;
 using static A2m.Server.ExtLevelEditor;
@@ -118,6 +119,23 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
         }
 
         Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, time));
+    }
+
+    /// <summary>States only reach the players in the room when they change, so a player arriving later is told what's
+    /// running. The event carries each state's real start time, which puts them on the same timeline as everyone else.</summary>
+    public virtual void SendCurrentStates(Player player)
+    {
+        var states = CurrentStates;
+
+        if (states.Length == 0 || Room.IsObjectKilled(Id))
+            return;
+
+        var goToStates = new GameObjectComponents();
+
+        foreach (var state in states)
+            goToStates.Add(state.StateName, state.GetJoinSettings());
+
+        player.SendSyncEventToPlayer(new AiStateSyncEvent { GoToStates = goToStates }.GetSyncEvent(Id, states[0].StateStartTime));
     }
 
     private static GameObjectComponents GetGameComponents(IEnumerable<IAIState> states, float time)
