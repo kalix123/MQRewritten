@@ -1,0 +1,38 @@
+@using Web.Razor.Admin
+@{
+    var nonce = Context.Items[AdminGateMiddleware.NonceKey] as string;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <title>@ViewData["Title"]</title>
+    <style nonce="@nonce">
+        :root { --bg: #0f0f10; --panel: #18181a; --text: #f2f2f0; --muted: #a8a8a3; --accent: #f2921d; --accent-hi: #ffab45; --error: #ff6b6b; --line: #2c2c30; }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+        .backdrop { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(0, 0, 0, .6); }
+        .dialog { width: 100%; max-width: 360px; padding: 28px; background: var(--panel); border: 2px solid var(--accent); border-radius: 10px; box-shadow: 0 12px 40px rgba(0, 0, 0, .5); }
+        .dialog h1 { margin: 0 0 16px; font-size: 1.4rem; color: var(--accent-hi); }
+        label { display: block; margin: 12px 0 4px; font-size: .9rem; color: var(--muted); }
+        input { width: 100%; padding: 10px 12px; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; }
+        input:focus { outline: 2px solid var(--accent); outline-offset: 0; }
+        button { font: inherit; cursor: pointer; }
+        .dialog button { width: 100%; margin-top: 20px; padding: 10px; font-weight: 700; color: #111; background: var(--accent); border: 0; border-radius: 6px; }
+        .dialog button:hover { background: var(--accent-hi); }
+        .error { margin: 0 0 4px; padding: 8px 10px; color: var(--error); background: rgba(255, 107, 107, .1); border-radius: 6px; font-size: .9rem; }
+        .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: var(--panel); border-bottom: 1px solid var(--line); font-weight: 700; color: var(--accent-hi); }
+        .bar form { display: flex; align-items: center; gap: 12px; margin: 0; }
+        .who { color: var(--muted); font-weight: 400; }
+        .link { padding: 6px 12px; color: var(--text); background: transparent; border: 1px solid var(--line); border-radius: 6px; }
+        .link:hover { border-color: var(--accent); }
+        .content { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+    </style>
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>

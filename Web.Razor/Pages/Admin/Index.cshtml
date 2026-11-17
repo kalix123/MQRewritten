@@ -1,0 +1,46 @@
+@page
+@model Web.Razor.Pages.Admin.AdminIndexModel
+@{
+    ViewData["Title"] = "Admin";
+}
+
+@if (Model.AdminSession == null)
+{
+    <div class="backdrop">
+        <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="signin-title">
+            <h1 id="signin-title">Sign in</h1>
+
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <p class="error" role="alert">@Model.ErrorMessage</p>
+            }
+
+            <form method="post" asp-page-handler="SignIn" autocomplete="off">
+                <label for="username">Username</label>
+                <input id="username" name="Username" type="text" value="@Model.Username" maxlength="64"
+                       autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus />
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" maxlength="256"
+                       autocomplete="current-password" required />
+
+                <button type="submit">Sign in</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <header class="bar">
+        <span>Admin</span>
+        <form method="post" asp-page-handler="SignOut">
+            <span class="who">@Model.AdminSession.Username</span>
+            <button type="submit" class="link">Sign out</button>
+        </form>
+    </header>
+
+    <main class="content">
+        <h1>Admin</h1>
+        <p>Nothing here yet.</p>
+    </main>
+}
