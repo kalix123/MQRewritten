@@ -10,8 +10,9 @@ using static A2m.Server.ExtLevelEditor;
 namespace Server.Reawakened.Entities.Components.Characters.Controllers.Base.Abstractions;
 public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
 {
-    public IAIState[] CurrentStates = [];
-    public List<IAIState> NextStates = [];
+    public IAIState CurrentState;
+    public IAIState NextState;
+    public List<IAIState> InactiveStates = [];
 
     public ILogger<T> Logger { get; set; }
 
@@ -51,7 +52,14 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
             return;
         }
 
-        NextStates.Add(state);
+        if (InactiveStates.Contains(state))
+        {
+            NextState = InactiveStates.First(x => x == state);
+            return;
+        }
+
+        InactiveStates.Add(state);
+        NextState = state;
     }
 
     public void AddNextState(Type t)
@@ -80,69 +88,73 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
             return;
         }
 
-        NextStates.Add(aiState);
+        if (InactiveStates.Contains(aiState))
+        {
+            NextState = InactiveStates.First(x => x == aiState);
+            return;
+        }
+
+        InactiveStates.Add(aiState);
+        NextState = aiState;
     }
 
     public void GoToNextState()
     {
-        if (Room == null || Room.IsObjectKilled(Id))
+        if (Room == null || Room.IsObjectKilled(Id) || NextState == null)
             return;
 
-        foreach (var state in CurrentStates)
+        if (CurrentState != null)
         {
             Logger.LogTrace(
                 "Stopping state '{State}' for '{Name} ({Id})'",
-                state.StateName, PrefabName, Id
+                CurrentState.StateName, PrefabName, Id
             );
 
-            state.StopState();
+            CurrentState.StopState();
         }
-
-        var time = Room.Time;
         
+        var time = Room.Time;
+
         var syncEvent2 = new AiStateSyncEvent()
         {
-            InStates = GetGameComponents(CurrentStates, 0),
-            GoToStates = GetGameComponents(NextStates, time)
+            InStates = GetGameComponents(CurrentState, 0f),
+            GoToStates = GetGameComponents(NextState, time)
         };
 
-        CurrentStates = [.. NextStates];
-        NextStates.Clear();
+        CurrentState = NextState;
+        NextState = null;
         
-        foreach (var state in CurrentStates)
-        {
-            Logger.LogTrace(
-                "Starting state '{State}' for '{Name} ({Id})'",
-                state.StateName, PrefabName, Id
-            );
-            state.StartState(time);
-        }
+        Logger.LogTrace(
+            "Starting state '{State}' for '{Name} ({Id})'",
+            CurrentState.StateName, PrefabName, Id
+        );
+        
+        CurrentState.StartState(time);
 
         Room.SendSyncEvent(syncEvent2.GetSyncEvent(Id, time));
     }
 
-    /// <summary>States only reach the players in the room when they change, so a player arriving later is told what's
-    /// running. The event carries each state's real start time, which puts them on the same timeline as everyone else.</summary>
+    /// <summary>MQ Rewritten: states only reach the players in the room when they change, so a player arriving later is
+    /// told what's running. The event carries the state's real start time, which puts it on the same timeline as
+    /// everyone else.</summary>
     public virtual void SendCurrentStates(Player player)
     {
-        var states = CurrentStates;
+        var state = CurrentState;
 
-        if (states.Length == 0 || Room.IsObjectKilled(Id))
+        if (state == null || Room.IsObjectKilled(Id))
             return;
 
         var goToStates = new GameObjectComponents();
+        goToStates.Add(state.StateName, state.GetJoinSettings());
 
-        foreach (var state in states)
-            goToStates.Add(state.StateName, state.GetJoinSettings());
-
-        player.SendSyncEventToPlayer(new AiStateSyncEvent { GoToStates = goToStates }.GetSyncEvent(Id, states[0].StateStartTime));
+        player.SendSyncEventToPlayer(new AiStateSyncEvent { GoToStates = goToStates }.GetSyncEvent(Id, state.StateStartTime));
     }
 
-    private static GameObjectComponents GetGameComponents(IEnumerable<IAIState> states, float time)
+    private static GameObjectComponents GetGameComponents(IAIState state, float time)
     {
         var components = new GameObjectComponents();
 
-        foreach (var state in states)
+        if (state != null)
             components.Add(state.StateName, state.GetFullSettings(time));
 
         return components;
@@ -153,8 +165,7 @@ public abstract class BaseAIStateMachine<T> : Component<T>, IAIStateMachine
         if (Room == null)
             return;
 
-        foreach (var state in CurrentStates)
-            state.UpdateState();
+        CurrentState?.UpdateState();
     }
 
     public override void NotifyCollision(NotifyCollision_SyncEvent notifyCollisionEvent, Player player) { }
